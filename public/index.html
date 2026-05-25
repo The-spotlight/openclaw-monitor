@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OpenClaw 服务监控面板</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-left">
+      <h1 class="logo">🦀 OpenClaw <span>Monitor</span></h1>
+    </div>
+    <div class="header-right">
+      <label class="refresh-control">
+        <span>刷新频率</span>
+        <select id="refreshRate">
+          <option value="3000">3 秒</option>
+          <option value="5000" selected>5 秒</option>
+          <option value="10000">10 秒</option>
+          <option value="30000">30 秒</option>
+          <option value="60000">60 秒</option>
+        </select>
+      </label>
+      <span class="last-update" id="lastUpdate">--</span>
+    </div>
+  </header>
+
+  <main class="dashboard">
+    <!-- 服务状态卡片 -->
+    <section class="status-cards">
+      <div class="card status-card" id="serviceStatus">
+        <div class="card-header">
+          <h3>服务状态</h3>
+          <span class="status-badge online" id="statusBadge">在线</span>
+        </div>
+        <div class="status-details">
+          <div class="detail-item">
+            <span class="label">运行时长</span>
+            <span class="value" id="uptime">--</span>
+          </div>
+          <div class="detail-item">
+            <span class="label">启动时间</span>
+            <span class="value" id="startTime">--</span>
+          </div>
+          <div class="detail-item">
+            <span class="label">版本</span>
+            <span class="value" id="version">--</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card metric-card">
+        <div class="card-header">
+          <h3>CPU 使用率</h3>
+          <span class="metric-value" id="cpuValue">--%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill cpu-fill" id="cpuBar"></div>
+        </div>
+        <span class="threshold-hint">阈值: 80%</span>
+      </div>
+
+      <div class="card metric-card">
+        <div class="card-header">
+          <h3>内存使用率</h3>
+          <span class="metric-value" id="memValue">--%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill mem-fill" id="memBar"></div>
+        </div>
+        <span class="threshold-hint">阈值: 90%</span>
+      </div>
+
+      <div class="card metric-card">
+        <div class="card-header">
+          <h3>活跃会话</h3>
+          <span class="metric-value" id="sessionCount">--</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">峰值</span>
+          <span class="value" id="peakSessions">--</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 资源趋势图 -->
+    <section class="charts-section">
+      <div class="card chart-card">
+        <div class="card-header">
+          <h3>CPU 使用趋势</h3>
+        </div>
+        <canvas id="cpuChart"></canvas>
+      </div>
+      <div class="card chart-card">
+        <div class="card-header">
+          <h3>内存使用趋势</h3>
+        </div>
+        <canvas id="memChart"></canvas>
+      </div>
+    </section>
+
+    <!-- 活跃会话列表 -->
+    <section class="card sessions-section">
+      <div class="card-header">
+        <h3>活跃会话</h3>
+        <span class="badge" id="sessionBadge">0</span>
+      </div>
+      <div class="table-wrapper">
+        <table class="sessions-table">
+          <thead>
+            <tr>
+              <th>会话 ID</th>
+              <th>客户端 IP</th>
+              <th>连接时间</th>
+              <th>持续时长</th>
+              <th>请求数</th>
+              <th>状态</th>
+            </tr>
+          </thead>
+          <tbody id="sessionsBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 日志面板 -->
+    <section class="card logs-section">
+      <div class="card-header">
+        <h3>最近日志</h3>
+        <div class="log-filters">
+          <button class="filter-btn active" data-level="all">全部</button>
+          <button class="filter-btn" data-level="error">错误</button>
+          <button class="filter-btn" data-level="warn">警告</button>
+          <button class="filter-btn" data-level="info">信息</button>
+        </div>
+      </div>
+      <div class="logs-container" id="logsContainer"></div>
+    </section>
+  </main>
+
+  <!-- 通知容器 -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

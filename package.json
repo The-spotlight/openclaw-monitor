@@ -1,0 +1,29 @@
+{
+  "name": "openclaw-monitor",
+  "version": "1.0.0",
+  "description": "OpenClaw real-time service monitoring system",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js",
+    "test": "node --test --test-force-exit --test-timeout=15000 test/collectors.test.js",
+    "test:api": "node --test --test-force-exit --test-timeout=20000 test/api.test.js",
+    "test:all": "node --test --test-force-exit --test-timeout=20000 test/collectors.test.js test/api.test.js",
+    "validate": "node scripts/validate.js"
+  },
+  "keywords": ["monitoring", "dashboard", "real-time"],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "better-sqlite3": "^12.10.0",
+    "express": "^5.2.1",
+    "helmet": "^8.2.0"
+  },
+  "devDependencies": {
+    "supertest": "^7.2.2"
+  }
+}
